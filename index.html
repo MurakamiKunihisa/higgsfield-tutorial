@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Higgsfield AI — 完全チュートリアル 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg2: #f5f6f9;
+  --bg3: #eceef4;
+  --border: #dde0ea;
+  --border2: #c8ccd8;
+  --text: #1a1d2e;
+  --text2: #4a5070;
+  --text3: #8890aa;
+  --accent: #6c63ff;
+  --accent2: #ff6b6b;
+  --accent3: #43d9ad;
+  --accent4: #ffb347;
+  --accent5: #74c7ec;
+  --ch1: #6c63ff;
+  --ch2: #43d9ad;
+  --ch3: #ff6b6b;
+  --ch4: #ffb347;
+  --ch5: #74c7ec;
+  --display: 'Syne', sans-serif;
+  --body: 'Noto Sans JP', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ── LAYOUT ── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  padding: 28px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar-logo { padding: 0 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.logo-text { font-family: var(--display); font-size: 16px; font-weight: 800; color: var(--text); }
+.logo-sub { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.nav-section { margin-bottom: 4px; }
+.nav-section-label { font-family: var(--mono); font-size: 9px; color: var(--text3); padding: 8px 20px 4px; letter-spacing: .1em; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 7px 20px; color: var(--text2); text-decoration: none; font-size: 12px; transition: background .15s, color .15s; }
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
+.nav-num { width: 20px; height: 20px; border-radius: 6px; font-family: var(--display); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* ── MAIN ── */
+.main { flex: 1; overflow-x: hidden; }
+
+/* ── HERO ── */
+.hero {
+  padding: 64px 56px 48px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #f0eeff 0%, #fff 50%, #e8fdf7 100%);
+}
+.hero-badge { display: inline-block; font-family: var(--mono); font-size: 10px; color: var(--accent); background: rgba(108,99,255,.1); border: 1px solid rgba(108,99,255,.2); border-radius: 20px; padding: 4px 12px; margin-bottom: 20px; }
+.hero h1 { font-family: var(--display); font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; background: linear-gradient(135deg, #6c63ff, #43d9ad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-sub { font-size: 15px; color: var(--text2); max-width: 560px; line-height: 1.7; margin-bottom: 28px; }
+.hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+.hero-meta-item { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.hero-meta-item span { color: var(--text); font-weight: 500; margin-left: 6px; }
+
+/* ── CHAPTER MAP ── */
+.chapter-map { padding: 40px 56px; border-bottom: 1px solid var(--border); background: var(--bg2); }
+.section-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 20px; }
+.chapter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.chapter-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
+.chapter-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.chapter-card.c1::before { background: var(--ch1); }
+.chapter-card.c2::before { background: var(--ch2); }
+.chapter-card.c3::before { background: var(--ch3); }
+.chapter-card.c4::before { background: var(--ch4); }
+.chapter-card.c5::before { background: var(--ch5); }
+.chapter-card.c6::before { background: linear-gradient(90deg, var(--ch1), var(--ch5)); }
+.chapter-num { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 8px; }
+.chapter-title { font-family: var(--display); font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.chapter-desc { font-size: 11px; color: var(--text2); line-height: 1.6; }
+
+/* ── CONTENT ── */
+.content { padding: 0 56px 80px; }
+
+/* ── CHAPTER SECTIONS ── */
+.chapter-section { padding: 48px 0 32px; border-bottom: 1px solid var(--border); }
+.chapter-section:last-child { border-bottom: none; }
+.chapter-header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 32px; }
+.chapter-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.c1 .chapter-icon { background: var(--ch1); }
+.c2 .chapter-icon { background: var(--ch2); }
+.c3 .chapter-icon { background: var(--ch3); }
+.c4 .chapter-icon { background: var(--ch4); }
+.c5 .chapter-icon { background: var(--ch5); }
+.chapter-header-text h2 { font-family: var(--display); font-size: 28px; font-weight: 800; line-height: 1.2; }
+.ch-sub { font-size: 12px; color: var(--text2); margin-top: 6px; line-height: 1.6; }
+h3 { font-family: var(--display); font-size: 16px; font-weight: 700; margin: 28px 0 12px; color: var(--text); padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h4 { font-family: var(--display); font-size: 13px; font-weight: 700; margin: 18px 0 8px; color: var(--text2); }
+p { font-size: 13px; color: var(--text2); line-height: 1.8; margin-bottom: 12px; }
+
+/* ── CALLOUTS ── */
+.callout { border-radius: 10px; padding: 14px 18px; font-size: 12px; line-height: 1.7; margin: 16px 0; border-left: 3px solid; }
+.callout.info { background: rgba(108,99,255,.06); border-color: var(--accent); color: var(--text2); }
+.callout.tip { background: rgba(67,217,173,.06); border-color: var(--accent3); color: var(--text2); }
+.callout.warn { background: rgba(255,107,107,.06); border-color: var(--accent2); color: var(--text2); }
+.callout.note { background: rgba(255,179,71,.06); border-color: var(--accent4); color: var(--text2); }
+.callout strong { color: var(--text); }
+
+/* ── CODE BLOCKS ── */
+.code-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; font-family: var(--mono); font-size: 12px; line-height: 1.8; margin: 16px 0; overflow-x: auto; color: var(--text); }
+.code-block .comment { color: var(--text3); }
+.code-block .string { color: var(--accent3); }
+.code-block .key { color: var(--accent); }
+.code-block .num { color: var(--accent4); }
+
+/* ── TABLES ── */
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+thead tr { background: var(--bg3); }
+th { font-family: var(--display); font-weight: 700; font-size: 11px; text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border2); color: var(--text); }
+td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text2); }
+tr:hover td { background: var(--bg2); }
+
+/* ── MODEL GRID ── */
+.model-grid { display: grid; gap: 14px; margin: 16px 0; }
+.model-grid.cols2 { grid-template-columns: repeat(2, 1fr); }
+.model-grid.cols3 { grid-template-columns: repeat(3, 1fr); }
+.model-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+.model-card-name { font-family: var(--display); font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.model-card-tag { display: inline-block; font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 10px; margin-bottom: 10px; }
+.model-card-desc { font-size: 11px; color: var(--text2); line-height: 1.6; }
+.model-card-meta { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+.model-card-meta span { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+.model-card-meta strong { color: var(--text); }
+
+/* ── STEP LIST ── */
+.step-list { list-style: none; margin: 16px 0; }
+.step-list li { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+.step-num { width: 26px; height: 26px; border-radius: 8px; background: var(--bg3); border: 1px solid var(--border2); font-family: var(--display); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text); }
+.step-body { flex: 1; font-size: 12px; color: var(--text2); line-height: 1.7; padding-top: 3px; }
+.step-body strong { color: var(--text); }
+
+/* ── MODE GRID (Marketing Studio modes) ── */
+.mode-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+.mode-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.mode-card-name { font-family: var(--display); font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.mode-card-desc { font-size: 11px; color: var(--text2); line-height: 1.5; }
+.mode-card-cost { font-family: var(--mono); font-size: 10px; color: var(--accent4); margin-top: 6px; }
+
+/* ── BADGE ── */
+.badge { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+.badge.purple { background: rgba(108,99,255,.12); color: var(--ch1); }
+.badge.green { background: rgba(67,217,173,.12); color: var(--ch2); }
+.badge.red { background: rgba(255,107,107,.12); color: var(--ch3); }
+.badge.orange { background: rgba(255,179,71,.12); color: var(--ch4); }
+.badge.blue { background: rgba(116,199,236,.12); color: var(--ch5); }
+
+/* ── APPENDIX ── */
+.appendix-section { padding: 48px 0; }
+.credit-table td:nth-child(3) { font-family: var(--mono); color: var(--accent4); font-weight: 600; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .hero, .chapter-map, .content { padding-left: 24px; padding-right: 24px; }
+  .hero h1 { font-size: 32px; }
+  .chapter-grid { grid-template-columns: 1fr; }
+  .model-grid.cols2, .model-grid.cols3 { grid-template-columns: 1fr; }
+  .mode-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-text">Higgsfield AI</div>
+    <div class="logo-sub">完全チュートリアル 2026</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">はじめに</div>
+    <a class="nav-item" href="#overview"><span class="nav-dot"></span>概要と準備</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Chapter 1</div>
+    <a class="nav-item" href="#ch1"><span class="nav-num" style="background:rgba(108,99,255,.15);color:var(--ch1)">1</span>静止画生成</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Chapter 2</div>
+    <a class="nav-item" href="#ch2"><span class="nav-num" style="background:rgba(67,217,173,.15);color:var(--ch2)">2</span>動画生成</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Chapter 3</div>
+    <a class="nav-item" href="#ch3"><span class="nav-num" style="background:rgba(255,107,107,.15);color:var(--ch3)">3</span>Marketing Studio</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Chapter 4</div>
+    <a class="nav-item" href="#ch4"><span class="nav-num" style="background:rgba(255,179,71,.15);color:var(--ch4)">4</span>Cinema Studio</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Chapter 5</div>
+    <a class="nav-item" href="#ch5"><span class="nav-num" style="background:rgba(116,199,236,.15);color:var(--ch5)">5</span>Canvas</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">付録</div>
+    <a class="nav-item" href="#appendix"><span class="nav-dot"></span>クレジット早見表</a>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✦ 決定版ガイド 2026</div>
+  <h1>Higgsfield AI<br>完全チュートリアル</h1>
+  <p class="hero-sub">静止画生成から動画生成、Marketing Studio、Cinema Studio、そしてノードベースのCanvasワークフローまで。実際の操作手順に沿って網羅的に解説します。</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">対象プラン <span>Ultra / Pro / Free 共通</span></div>
+    <div class="hero-meta-item">画像モデル <span>20種以上</span></div>
+    <div class="hero-meta-item">動画モデル <span>16種以上</span></div>
+    <div class="hero-meta-item">更新日 <span>2026.05</span></div>
+  </div>
+</section>
+
+<!-- CHAPTER MAP -->
+<section class="chapter-map" id="overview">
+  <div class="section-label">チュートリアル構成</div>
+  <div class="chapter-grid">
+    <div class="chapter-card c1">
+      <div class="chapter-num">CHAPTER 01</div>
+      <div class="chapter-title">静止画生成</div>
+      <div class="chapter-desc">代表モデルの選び方・プロンプト・アスペクト比・クレジット別使い分け</div>
+    </div>
+    <div class="chapter-card c2">
+      <div class="chapter-num">CHAPTER 02</div>
+      <div class="chapter-title">動画生成</div>
+      <div class="chapter-desc">テキスト→動画・画像→動画・音声付き動画の3パターンを網羅</div>
+    </div>
+    <div class="chapter-card c3">
+      <div class="chapter-num">CHAPTER 03</div>
+      <div class="chapter-title">Marketing Studio</div>
+      <div class="chapter-desc">商品URL → 広告動画。9モードの使い分けとワークフロー</div>
+    </div>
+    <div class="chapter-card c4">
+      <div class="chapter-num">CHAPTER 04</div>
+      <div class="chapter-title">Cinema Studio</div>
+      <div class="chapter-desc">ジャンル・カメラ・カラグレ・Mr.Higgs・Elementsの完全制御</div>
+    </div>
+    <div class="chapter-card c5">
+      <div class="chapter-num">CHAPTER 05</div>
+      <div class="chapter-title">Canvas（ノードベース）</div>
+      <div class="chapter-desc">ノードを繋いでパイプライン化。テンプレートと大量生産の手順</div>
+    </div>
+    <div class="chapter-card c6">
+      <div class="chapter-num">APPENDIX</div>
+      <div class="chapter-title">クレジット早見表 &amp; Tips</div>
+      <div class="chapter-desc">モデル別クレジット消費の実測値と、無駄なく使うための運用術</div>
+    </div>
+  </div>
+  <div class="callout info" style="margin-top:24px">
+    <strong>このチュートリアルの使い方：</strong> Ch.1→5を順に進めることで、静止画で素材を作り→動画に変換し→Marketing Studio・Cinema Studioで完成品に仕上げ→Canvasで工程を自動化する「一気通貫の制作フロー」を体験できます。
+  </div>
+</section>
+
+<div class="content">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CHAPTER 1: 静止画生成 -->
+<!-- ═══════════════════════════════════════ -->
+<section class="chapter-section c1" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-icon">01</div>
+    <div class="chapter-header-text">
+      <h2>静止画生成</h2>
+      <div class="ch-sub">Image Generation — テキストや参照画像から静止画を生成する。全ワークフローの出発点となる基本操作。</div>
+    </div>
+  </div>
+
+  <h3>1-1. 代表モデルの選び方</h3>
+  <p>Higgsfieldには20種類以上の画像モデルがあります。用途別に絞ると迷いません。</p>
+  <div class="model-grid cols3">
+    <div class="model-card">
+      <div class="model-card-name">Soul 2.0</div>
+      <div class="model-card-tag badge purple">人物・ポートレート</div>
+      <div class="model-card-desc">肌質・表情・髪の毛の再現が最高水準。人物が主役のコンテンツに最適。最安クラスで費用対効果が圧倒的。</div>
+      <div class="model-card-meta"><span>コスト <strong>0.12 cr</strong></span><span>比率 <strong>9:16 / 1:1</strong></span></div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Nano Banana Pro</div>
+      <div class="model-card-tag badge green">汎用・環境</div>
+      <div class="model-card-desc">人物+背景の空気感を両立。渋谷・新宿など都市環境の描写が特に得意。プロンプトへの追従性が高い。</div>
+      <div class="model-card-meta"><span>コスト <strong>2 cr</strong></span><span>比率 <strong>全形式対応</strong></span></div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">GPT Image 2</div>
+      <div class="model-card-tag badge blue">テキスト・ロゴ</div>
+      <div class="model-card-desc">画像内の文字描写が唯一信頼できるモデル。lowで確認→highで最終書き出しの2段階運用が効率的。</div>
+      <div class="model-card-meta"><span>low <strong>0.5 cr</strong></span><span>high <strong>7 cr</strong></span></div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Soul Cast</div>
+      <div class="model-card-tag badge purple">キャラクター固定</div>
+      <div class="model-card-desc">テキストのみで一貫したキャラクターを生成。Soul Characterを事前に学習させることで同一人物を量産できる。</div>
+      <div class="model-card-meta"><span>コスト <strong>0.12 cr</strong></span></div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Flux Kontext</div>
+      <div class="model-card-tag badge orange">画像編集</div>
+      <div class="model-card-desc">既存画像への指示編集が得意。「背景だけ変える」「服だけ変える」など部分的な変更に強い。</div>
+      <div class="model-card-meta"><span>コスト <strong>2 cr</strong></span></div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Cinema Studio 2.5</div>
+      <div class="model-card-tag badge orange">映画的スチル</div>
+      <div class="model-card-desc">映画のスチル写真のような質感。カラグレやシネマティックな照明を静止画で試したいときに使う。</div>
+      <div class="model-card-meta"><span>コスト <strong>2 cr</strong></span></div>
+    </div>
+  </div>
+
+  <h3>1-2. 効果的なプロンプト構造</h3>
+  <div class="code-block">
+<span class="comment">// 推奨プロンプト構造（英語）</span>
+<span class="key">[被写体]</span>, <span class="key">[状況・動作]</span>, <span class="key">[場所・背景]</span>,
+<span class="key">[照明]</span>, <span class="key">[カメラ・レンズ]</span>, <span class="key">[スタイル]</span>
+
+<span class="comment">// 例：Soul 2.0 用</span>
+<span class="string">"Japanese woman in her 20s, standing at Shibuya crossing,
+golden hour lighting, 85mm portrait lens, cinematic, photorealistic"</span>
+
+<span class="comment">// 例：商品撮影（Nano Banana Pro）</span>
+<span class="string">"Green tea can product shot, clean white studio background,
+soft box lighting, commercial photography, 4K, ultra detailed"</span>
+  </div>
+
+  <h3>1-3. 基本操作手順（テキスト → 静止画）</h3>
+  <ol class="step-list">
+    <li><div class="step-num">1</div><div class="step-body"><strong>Generate → Image を選択</strong>　左サイドバーから Generate を開き、Image タブをクリック。</div></li>
+    <li><div class="step-num">2</div><div class="step-body"><strong>モデルを選択</strong>　上部のモデルドロップダウンから用途に合ったモデルを選ぶ（例：Soul 2.0）。</div></li>
+    <li><div class="step-num">3</div><div class="step-body"><strong>プロンプトを入力</strong>　英語で「被写体 + 環境 + 照明 + スタイル」の順に記述する。</div></li>
+    <li><div class="step-num">4</div><div class="step-body"><strong>アスペクト比を設定</strong>　SNS縦型は 9:16、横型動画用素材は 16:9、汎用は 1:1 を選択。</div></li>
+    <li><div class="step-num">5</div><div class="step-body"><strong>Generate をクリック</strong>　生成が完了したら Library → Generations で結果を確認・ダウンロード。</div></li>
+  </ol>
+
+  <h3>1-4. 画像 → 画像（参照画像を使った編集）</h3>
+  <p>生成した画像を参照画像として使うことで、構図やキャラクターを維持しながら変更を加えられます。</p>
+  <ol class="step-list">
+    <li><div class="step-num">1</div><div class="step-body"><strong>Image タブで「Add Reference」</strong>　元画像をアップロードまたはライブラリから選択。</div></li>
+    <li><div class="step-num">2</div><div class="step-body"><strong>Role を設定</strong>　image（構図参照）/ style（スタイル参照）/ character（人物参照）から選択。</div></li>
+    <li><div class="step-num">3</div><div class="step-body"><strong>変更したい要素だけプロンプトに書く</strong>　「change background to snowy mountain」のように差分を指示。</div></li>
+  </ol>
+
+  <h3>1-5. 実際の生成結果比較（同一テーマ・モデル別）</h3>
+  <p>5枚すべて同一のプロンプトで生成しています。モデルによって解釈・表現がどう異なるかを比較してください。</p>
+  <div style="background:var(--bg3);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text);margin-bottom:4px;">
+    A young Japanese woman in casual streetwear, standing on a Shibuya crossing, golden hour, cinematic color grading, shallow depth of field
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-family:var(--body);font-size:11px;color:var(--text3);">
+      カジュアルなストリートウェアを着た若い日本人女性が、渋谷の交差点に立っている。ゴールデンアワー。映画的なカラーグレーディング。浅い被写界深度。
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0;">
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <img src="hf_20260506_132435_4ae217e4-420b-440b-9aad-5869e869e251.png"
+           alt="Soul 2.0 生成例" style="width:100%;display:block;object-fit:contain;">
+      <div style="padding:12px 14px;">
+        <div style="font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:4px;">Soul 2.0</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:6px;">0.12 cr</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;">肌質・髪・表情がリアル。カフェシーンでもライティングの再現度が高い。</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <img src="hf_20260506_132444_867b0c55-956f-41ee-97e4-866a96d047e2.png"
+           alt="Nano Banana Pro 生成例" style="width:100%;display:block;object-fit:contain;">
+      <div style="padding:12px 14px;">
+        <div style="font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:4px;">Nano Banana Pro</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent3);margin-bottom:6px;">2 cr</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;">渋谷109の背景まで含めた「場所の空気感」が秀逸。人物と都市環境の両立。</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <img src="hf_20260508_030418_ce022ddf-3f76-49e2-bd40-88dbf835e3a0.png"
+           alt="Cinema Studio 2.5 生成例" style="width:100%;display:block;object-fit:contain;">
+      <div style="padding:12px 14px;">
+        <div style="font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:4px;">Cinema Studio 2.5</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent4);margin-bottom:6px;">2 cr</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;">同一プロンプトでもゴールデンアワーを夜の雨の渋谷に昇華。映画的な空気感・群衆のボケ・濡れた路面の反射まで自律的に演出する。</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <img src="hf_20260506_132449_47a4438d-7d0d-4efa-b7b0-60c362a63135.png"
+           alt="GPT Image 2 生成例" style="width:100%;display:block;object-fit:contain;background:#000;">
+      <div style="padding:12px 14px;">
+        <div style="font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:4px;">GPT Image 2（low）</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent5);margin-bottom:6px;">0.5 cr</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;">渋谷の交差点に立つ女性。ゴールデンアワーの逆光と映画的なカラグレが表現できている。lowクオリティでもポートレートの質感は十分実用レベル。</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <img src="hf_20260508_030430_ccd90b8f-6d95-4866-8cd2-713a60dac2ca.png"
+           alt="Flux Kontext 生成例" style="width:100%;display:block;object-fit:contain;">
+      <div style="padding:12px 14px;">
+        <div style="font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:4px;">Flux Kontext</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent4);margin-bottom:6px;">2 cr</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;">プロンプトへの追従性が高く、全身・背景の看板・群衆まで緻密に描写。ゴールデンアワーの光とレンズフレアの再現が自然。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout tip">
+    <strong>Tips：</strong> Soul 2.0 で人物を生成してから、Flux Kontext で背景だけ差し替えるという2段階の使い方が最もクレジット効率がよい。人物クオリティを0.12crで確保してから、背景変更に2crを使う形。
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CHAPTER 2: 動画生成 -->
+<!-- ═══════════════════════════════════════ -->
+<section class="chapter-section c2" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-icon">02</div>
+    <div class="chapter-header-text">
+      <h2>動画生成</h2>
+      <div class="ch-sub">Video Generation — テキスト・画像・音声を組み合わせて動画を生成する。3パターンのワークフローを習得する。</div>
+    </div>
+  </div>
+
+  <h3>2-1. 動画モデルの選び方</h3>
+  <div class="model-grid cols2">
+    <div class="model-card">
+      <div class="model-card-name">Seedance 2.0</div>
+      <div class="model-card-tag badge green">人物・参照駆動</div>
+      <div class="model-card-desc">参照画像からキャラクターのアイデンティティを維持しながら動画化。人物が主役のクリエイティブに最適。モーションのリアリティが高い。</div>
+      <div class="model-card-meta"><span>コスト <strong>〜10 cr</strong></span><span>長さ <strong>最大10秒</strong></span></div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Kling 3.0</div>
+      <div class="model-card-tag badge blue">マルチショット・音声</div>
+      <div class="model-card-desc">複数ショットの切り替えとネイティブ音声生成に対応。Start Frame / End Frameで動きの始点と終点を指定できる。</div>
+      <div class="model-card-meta"><span>コスト <strong>〜12 cr</strong></span><span>音声 <strong>対応</strong></span></div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Veo 3.1</div>
+      <div class="model-card-tag badge purple">環境音・高品質</div>
+      <div class="model-card-desc">Google DeepMind製。環境音・環境音楽の自動生成が秀逸。城・自然・建築など非人物コンテンツの品質が高い。</div>
+      <div class="model-card-meta"><span>コスト <strong>〜15 cr</strong></span><span>音声 <strong>環境音自動</strong></span></div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Cinema Studio Video V2</div>
+      <div class="model-card-tag badge orange">映画的・高制御</div>
+      <div class="model-card-desc">Cinema Studioのビデオ版。カメラワーク・照明・Speed Rampを細かく制御できる。ドラフト確認はV2（8cr）で行いV3（75cr）で最終出力。</div>
+      <div class="model-card-meta"><span>V2 <strong>8 cr</strong></span><span>V3 <strong>75 cr</strong></span></div>
+    </div>
+  </div>
+
+  <h3>2-2. テキスト → 動画</h3>
+  <p>最もシンプルなワークフロー。プロンプトだけで動画を生成します。</p>
+  <div class="code-block">
+<span class="comment">// Veo 3.1 向けプロンプト例（自律設計型）</span>
+<span class="string">"SHOT — Cinematic wide shot of Osaka castle at dawn.
+Cherry blossoms fall slowly in the foreground.
+Warm golden light rakes across the stone walls.
+Ambient sound: gentle wind, distant temple bell.
+No music. No people."</span>
+
+<span class="comment">// Seedance 2.0 向けプロンプト例</span>
+<span class="string">"Young Japanese woman walking through Shibuya crossing at night,
+neon reflections on wet pavement, slow motion 120fps,
+cinematic bokeh, photorealistic"</span>
+  </div>
+  <ol class="step-list">
+    <li><div class="step-num">1</div><div class="step-body"><strong>Generate → Video を選択</strong></div></li>
+    <li><div class="step-num">2</div><div class="step-body"><strong>モデルを選択</strong>　人物主役→Seedance 2.0、環境・風景→Veo 3.1 が基本選択。</div></li>
+    <li><div class="step-num">3</div><div class="step-body"><strong>プロンプトを入力</strong>　SHOTタイプ・被写体・照明・音声の4要素を英語で記述。</div></li>
+    <li><div class="step-num">4</div><div class="step-body"><strong>アスペクト比・長さを設定</strong>　縦型SNS用は9:16、YouTube用は16:9。長さは5〜10秒が標準。</div></li>
+  </ol>
+
+  <h3>2-3. 画像 → 動画（Start Frame）</h3>
+  <p>静止画を動画の出発点として使うワークフロー。Ch.1で生成した画像をそのまま動かせます。</p>
+  <ol class="step-list">
+    <li><div class="step-num">1</div><div class="step-body"><strong>Video タブ → 「Add Media」</strong>　Ch.1で生成した静止画を選択し、Role を「start_image」に設定。</div></li>
+    <li><div class="step-num">2</div><div class="step-body"><strong>動きのプロンプトを追加</strong>　「camera slowly pulls back」「gentle head turn to the right」など動作を指示。</div></li>
+    <li><div class="step-num">3</div><div class="step-body"><strong>Kling 3.0 を推奨</strong>　Start Frame / End Frame 両方指定できるため、動きの制御精度が高い。</div></li>
+  </ol>
+
+  <h3>2-4. 音声付き動画</h3>
+  <div class="callout info">
+    <strong>音声生成の選択肢：</strong> ①Kling 3.0のネイティブ音声生成（プロンプトに音声指示を含める）、②Veo 3.1の環境音自動付与、③外部で生成した音声ファイルをアップロードして medias の role に "audio" を指定する方法、の3通りがあります。
+  </div>
+  <div class="code-block">
+<span class="comment">// Kling 3.0 音声付きプロンプト例</span>
+<span class="string">"Aerial shot of Japanese countryside in autumn.
+Red and orange maple trees covering rolling hills.
+Sound design: rustling leaves, distant stream, soft wind.
+No dialogue. Ambient only."</span>
+  </div>
+
+  <h3>2-5. 動画化の素材例（Veo 3.1 向けスチル）</h3>
+  <p>以下はVeo 3.1で「城・夜明け・環境音」動画を生成する際に使用した参照スチル画像です。この静止画をStart Frameとして渡し、桜が揺れ・霧が流れる動画を生成しました。</p>
+  <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);margin:16px 0;">
+    <img src="hf_20260507_013353_b7338fa9-ed8c-4ecc-8206-b79d9294e2ff.png"
+         alt="Veo 3.1 参照スチル：城と桜" style="width:100%;display:block;object-fit:contain;">
+    <div style="padding:12px 16px;background:var(--bg2);font-size:11px;color:var(--text2);">
+      <strong style="color:var(--text);">Veo 3.1 参照画像</strong>　城・桜・夜明け / 16:9 / このスチルをStart Frameに設定 → 「cherry blossoms fall slowly, morning mist drifts through the valley, ambient temple bell」でテキストプロンプトを追加
+    </div>
+  </div>
+
+  <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);margin:16px 0;">
+    <video controls style="width:100%;display:block;background:#000;"
+           src="hf_20260507_045025_3e4946bb-dcee-4f49-990e-3e9a4c55ffc2.mp4">
+      お使いのブラウザは動画再生に対応していません。
+    </video>
+    <div style="padding:12px 16px;background:var(--bg2);font-size:11px;color:var(--text2);">
+      <strong style="color:var(--text);">↑ Veo 3.1 生成動画</strong>　上の静止画をStart Frameに設定して生成。霧の流れ・桜の揺れ・夜明けの光の変化が自然に表現され、環境音が自動付与される。
+      <div style="margin-top:10px;background:var(--bg3);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:10px;line-height:1.8;color:var(--text);">
+        Cinematic wide shot of Japanese castle on a misty hillside at dawn. Cherry blossoms gently sway in the foreground. Morning mist slowly drifts through the valley below. Soft golden light breaks through overcast clouds. Ambient sound: distant temple bell, gentle wind through blossoms. Camera: static with subtle push in. No music. No people.
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-family:var(--body);font-size:11px;color:var(--text3);">
+          夜明けの霧がかかった丘の上の日本の城を捉えたシネマティックなワイドショット。手前で桜が静かに揺れる。朝の霧が眼下の谷をゆっくりと流れる。曇り空から柔らかな金色の光が差し込む。環境音：遠くの寺の鐘、桜の花を抜ける穏やかな風。カメラ：わずかなプッシュインを伴う固定。音楽なし。人物なし。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>2-6. モデル別 生成動画サンプル</h3>
+  <p>同一テーマで各モデルが生成した動画です。モーションの質・描写の優先順位の違いを比較できます。</p>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:16px 0;">
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <video controls style="width:100%;display:block;background:#000;"
+             src="hf_20260507_022153_9776cf17-ebbc-4698-93bf-0994bb8c795b.mp4">
+        お使いのブラウザは動画再生に対応していません。
+      </video>
+      <div style="padding:12px 14px;">
+        <div style="font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:4px;">Seedance 2.0</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ch2);margin-bottom:6px;">〜10 cr · 人物参照駆動</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:10px;">参照画像からキャラクターを維持しながら動画化。表情・髪の揺れがリアル。ファイルサイズが最も軽く、SNS投稿向き。</div>
+        <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:10px;line-height:1.8;color:var(--text);">
+          Young Japanese woman walking through Shibuya crossing at night, neon reflections on wet pavement, slow motion 120fps, cinematic bokeh, photorealistic
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-family:var(--body);font-size:11px;color:var(--text3);">
+            夜の渋谷の交差点を歩く若い日本人女性。濡れた路面に映るネオンの反射。スローモーション120fps。映画的なボケ。フォトリアル。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <video controls style="width:100%;display:block;background:#000;"
+             src="hf_20260507_022200_5e33cce6-5332-4aee-81d2-216ef41e1674.mp4">
+        お使いのブラウザは動画再生に対応していません。
+      </video>
+      <div style="padding:12px 14px;">
+        <div style="font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:4px;">Kling 3.0</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ch5);margin-bottom:6px;">〜12 cr · マルチショット・音声</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Start / End Frame を活用した動きの制御が精密。ネイティブ音声生成に対応しており、BGM・環境音を自動付与できる。</div>
+        <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:10px;line-height:1.8;color:var(--text);">
+          Aerial shot of Japanese countryside in autumn. Red and orange maple trees covering rolling hills. Sound design: rustling leaves, distant stream, soft wind. No dialogue. Ambient only.
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-family:var(--body);font-size:11px;color:var(--text3);">
+            秋の日本の農村の空撮。赤とオレンジのもみじが連なる丘を覆う。音響：葉の擦れる音、遠くの小川、柔らかな風。台詞なし。環境音のみ。
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>2-7. Cinema Studio Video V2 vs V3 画質比較</h3>
+  <p>同一プロンプトでV2（ドラフト確認用）とV3（最終出力）を比較できます。方向性の確認はV2で行い、OKならV3で最終出力するのが基本ワークフローです。</p>
+
+  <div style="background:var(--bg3);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text);margin-bottom:16px;">
+    Ancient Japanese castle on a misty mountain at dawn, cherry blossoms falling slowly, cinematic wide shot, atmospheric fog, ultra realistic, birds flying in the distance
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-family:var(--body);font-size:11px;color:var(--text3);">
+      夜明けの霧がかかった山の上の古い日本の城。桜の花びらがゆっくりと舞い落ちる。シネマティックなワイドショット。大気感のある霧。超リアル。遠くを飛ぶ鳥。
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:24px;">
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--bg3);padding:8px 14px;font-family:var(--mono);font-size:10px;color:var(--ch4);font-weight:700;border-bottom:1px solid var(--border);">V2 — ドラフト確認用 · 8 cr</div>
+      <video controls style="width:100%;display:block;background:#000;"
+             src="hf_20260507_022217_bb35f346-065c-4f22-9f12-96180bae75fc.mp4">
+        お使いのブラウザは動画再生に対応していません。
+      </video>
+      <div style="padding:12px 14px;">
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;">カメラワーク・構図・モーションの方向性を確認するためのドラフト。本番前にここで意図通りかを検証する。</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="background:linear-gradient(90deg,rgba(255,179,71,.15),rgba(108,99,255,.1));padding:8px 14px;font-family:var(--mono);font-size:10px;color:var(--accent);font-weight:700;border-bottom:1px solid var(--border);">V3 — 最終出力 · 75 cr</div>
+      <video controls style="width:100%;display:block;background:#000;"
+             src="hf_20260508_035605_b0cc40db-7ec1-40bb-9771-1dabdbd544c3.mp4">
+        お使いのブラウザは動画再生に対応していません。
+      </video>
+      <div style="padding:12px 14px;">
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;">V2で方向性を確認後、同設定で生成した最終出力。霧の質感・桜の粒子・光の回りが大幅に向上している。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout tip">
+    <strong>コスト節約術：</strong> Cinema Studio Video V3（75cr）で生成する前に、必ずV2（8cr）でドラフトを確認する。構図・モーションが意図通りかをV2で検証してからV3に進む。これだけで無駄な高額生成を防げる。
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CHAPTER 3: Marketing Studio -->
+<!-- ═══════════════════════════════════════ -->
+<section class="chapter-section c3" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-icon">03</div>
+    <div class="chapter-header-text">
+      <h2>Marketing Studio</h2>
+      <div class="ch-sub">商品URLまたは画像を入力するだけで、広告動画を自動生成する専用ワークフロー。プロンプト不要で即戦力の素材が作れる。</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(255,107,107,.06);border:1.5px dashed var(--ch3);border-radius:12px;padding:16px 20px;margin-bottom:28px;display:flex;align-items:flex-start;gap:14px;">
+    <div style="font-size:22px;line-height:1;">📄</div>
+    <div>
+      <div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--ch3);margin-bottom:4px;">独立チュートリアルを別途作成予定</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;">Marketing Studio は機能が多岐にわたるため、本ドキュメントでは概要のみを扱います。広告モードの使い分け・Hook / Setting の詳細設定・Avatar との組み合わせなど、実践的な操作手順は <strong style="color:var(--text);">「Marketing Studio 完全チュートリアル」</strong> として別途独立したドキュメントを作成予定です。</div>
+    </div>
+  </div>
+
+  <h3>3-1. Marketing Studio とは</h3>
+  <p>Marketing Studioは「商品を広告する動画」に特化した自動生成エンジンです。テキストプロンプトを書く代わりに、商品のURLや画像を渡すだけで、商品の特性を自動解析して広告動画を生成します。</p>
+  <p>テレビCMの制作に例えると、従来の動画生成は「脚本家→監督→カメラマン」という工程を自分でこなす必要がありましたが、Marketing Studioでは「商品を渡せば広告代理店が全部やってくれる」イメージです。</p>
+
+  <div class="callout info">
+    <strong>product と webproduct の違い：</strong><br>
+    <strong>product</strong>（物理商品）→ ECサイトの商品ページURL、商品画像など特定の「物」を広告したい場合。<br>
+    <strong>webproduct</strong>（サービス・アプリ）→ App Store / Google Play のリスト、SaaSのランディングページなど「サービス全体」を広告したい場合。
+  </div>
+
+  <h3>3-2. 9つの広告モード</h3>
+  <div class="mode-grid">
+    <div class="mode-card">
+      <div class="mode-card-name">🎬 UGC</div>
+      <div class="mode-card-desc">ユーザー生成コンテンツ風。インフルエンサーが商品を紹介するような自然な演出。</div>
+      <div class="mode-card-cost">Hook / Setting 対応</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-card-name">📚 Tutorial</div>
+      <div class="mode-card-desc">商品の使い方を段階的に説明するハウツー動画。操作方法や手順の可視化に最適。</div>
+      <div class="mode-card-cost">Hook / Setting 対応</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-card-name">📦 Unboxing</div>
+      <div class="mode-card-desc">開封シーンを演出した動画。商品の「初見の感動」を伝えるEC向けフォーマット。</div>
+      <div class="mode-card-cost">Hook / Setting 対応</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-card-name">⭐ Product Review</div>
+      <div class="mode-card-desc">レビュー動画風。使用感や評価を語るスタイルで信頼性を演出。</div>
+      <div class="mode-card-cost">Hook / Setting 対応</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-card-name">👗 UGC Virtual Try On</div>
+      <div class="mode-card-desc">ファッション・コスメなどの試着体験を演出。商品を実際に使っている様子を生成。</div>
+      <div class="mode-card-cost">Hook / Setting 対応</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-card-name">🎨 Product Showcase</div>
+      <div class="mode-card-desc">商品そのものをシンプルに魅せる。白背景・スタジオ撮影風の商品動画。</div>
+      <div class="mode-card-cost">基本モード</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-card-name">🌅 Lifestyle</div>
+      <div class="mode-card-desc">商品を使っているライフスタイルシーンを演出。憧れ・世界観の訴求に強い。</div>
+      <div class="mode-card-cost">基本モード</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-card-name">✨ Before / After</div>
+      <div class="mode-card-desc">使用前後の変化を動画で対比。美容・クリーニング・リフォーム系に効果的。</div>
+      <div class="mode-card-cost">基本モード</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-card-name">📱 App Demo</div>
+      <div class="mode-card-desc">アプリの操作画面をスクリーンキャプチャ風に動かすデモ動画。webproduct向け。</div>
+      <div class="mode-card-cost">基本モード</div>
+    </div>
+  </div>
+
+  <h3>3-3. Hook と Setting（演出のカスタマイズ）</h3>
+  <p>UGC・Tutorial・Unboxing・Product Review・UGC Virtual Try Onの5モードでは、<strong>Hook</strong>（冒頭の掴み方）と<strong>Setting</strong>（舞台・ロケーション）を追加指定できます。</p>
+  <div class="model-grid cols2">
+    <div class="model-card">
+      <div class="model-card-name">Hook（掴み）</div>
+      <div class="model-card-desc">冒頭数秒で視聴者の注意を引く演出のタイプ。「Object flies into frame」「Dramatic reveal」「Before state shown first」などがある。広告の第一印象を左右する最重要パラメータ。</div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Setting（舞台）</div>
+      <div class="model-card-desc">動画の背景・ロケーション・雰囲気を指定。「Sunlit kitchen, morning light」「Urban rooftop, golden hour」「Minimalist studio, white backdrop」など。商品の世界観と合わせる。</div>
+    </div>
+  </div>
+
+  <h3>3-4. 基本ワークフロー（URL → 広告動画）</h3>
+  <ol class="step-list">
+    <li><div class="step-num">1</div><div class="step-body"><strong>Marketing Studio を開く</strong>　左サイドバーの「Marketing Studio」をクリック。</div></li>
+    <li><div class="step-num">2</div><div class="step-body"><strong>商品を登録</strong>　「+ New Product」→ 商品ページのURLを貼り付ける（自動スクレイピングが始まる）。物理商品は product、アプリ・サービスは webproduct を選択。</div></li>
+    <li><div class="step-num">3</div><div class="step-body"><strong>プリセット（モード）を選択</strong>　9つのモードから目的に合ったものを選ぶ（例：UGC）。</div></li>
+    <li><div class="step-num">4</div><div class="step-body"><strong>Hook / Setting を設定（任意）</strong>　対応モードの場合、Hook と Setting を選択してカスタマイズ。</div></li>
+    <li><div class="step-num">5</div><div class="step-body"><strong>Generate をクリック</strong>　URLのスクレイピングが完了次第、自動的に動画生成が始まる。</div></li>
+    <li><div class="step-num">6</div><div class="step-body"><strong>Library で確認・ダウンロード</strong>　生成完了後、Library → Generationsから確認。複数パターンを比較して最良のものを採用。</div></li>
+  </ol>
+
+  <div class="callout warn">
+    <strong>注意：</strong> URLが認証付きページ（ログイン必須）や動的に描画されるSPAの場合、スクレイピングが失敗することがあります。その場合は商品画像を直接アップロードしてproductを手動作成する方法（action='create'）を使います。
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CHAPTER 4: Cinema Studio -->
+<!-- ═══════════════════════════════════════ -->
+<section class="chapter-section c4" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-icon">04</div>
+    <div class="chapter-header-text">
+      <h2>Cinema Studio</h2>
+      <div class="ch-sub">映画的な映像表現を細部まで制御する高度なワークフロー。ジャンル・カメラ・照明・Speed Rampを組み合わせて、広告動画以上の「作品」を生成する。</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(255,179,71,.06);border:1.5px dashed var(--ch4);border-radius:12px;padding:16px 20px;margin-bottom:28px;display:flex;align-items:flex-start;gap:14px;">
+    <div style="font-size:22px;line-height:1;">📄</div>
+    <div>
+      <div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--ch4);margin-bottom:4px;">独立チュートリアルを別途作成予定</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;">Cinema Studio は映像制作の専門知識に踏み込んだ高度な機能を持つため、本ドキュメントでは概要のみを扱います。Mr.Higgs の活用・Elements の組み合わせ・Speed Ramp の全プリセット実例・V2→V3 の実践ワークフローなどは <strong style="color:var(--text);">「Cinema Studio 完全チュートリアル」</strong> として別途独立したドキュメントを作成予定です。</div>
+    </div>
+  </div>
+
+  <h3>4-1. Marketing Studio との根本的な違い</h3>
+  <p>Marketing Studioが「商品起点」であるのに対し、Cinema Studioは「映像表現起点」です。監督が「このシーンをこのカメラワークで撮りたい」という発想で使うツールです。</p>
+  <div class="model-grid cols2">
+    <div class="model-card">
+      <div class="model-card-name">Marketing Studio</div>
+      <div class="model-card-tag badge red">商品 → 動画</div>
+      <div class="model-card-desc">「この商品をどう見せるか」が出発点。プロンプト不要。広告代理店に丸投げするイメージ。</div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">Cinema Studio</div>
+      <div class="model-card-tag badge orange">表現 → 映像</div>
+      <div class="model-card-desc">「どんな映像を作るか」が出発点。カメラ・光・速度・音声まで監督として制御する。</div>
+    </div>
+  </div>
+
+  <h3>4-2. 主要パラメータ</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>パラメータ</th><th>内容</th><th>主な選択肢の例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Genre / Style</strong></td><td>映像の全体的なジャンルとトーン</td><td>Cinematic, Commercial, Documentary, Music Video, Horror, Sci-Fi</td></tr>
+        <tr><td><strong>Camera Shot</strong></td><td>ショットタイプとカメラの距離感</td><td>Wide Shot, Medium, Close-up, Extreme Close-up, Aerial, POV</td></tr>
+        <tr><td><strong>Camera Movement</strong></td><td>カメラの動き方</td><td>Static, Pan, Tilt, Dolly In/Out, Orbit, Handheld</td></tr>
+        <tr><td><strong>Lighting</strong></td><td>照明の質・方向・色温度</td><td>Golden Hour, Neon Night, Soft Box, Chiaroscuro, Silhouette</td></tr>
+        <tr><td><strong>Color Grading</strong></td><td>カラーグレーディングのプリセット</td><td>Teal & Orange, Film Noir, Pastel Dream, Cyberpunk, Raw Natural</td></tr>
+        <tr><td><strong>Speed Ramp</strong></td><td>速度変化のプリセット（V3以降）</td><td>Bullet Time, Impact, Ramp Up, Slow Motion, Freeze Frame</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4-3. Mr.Higgs（AIアシスタント）の活用</h3>
+  <p>Mr.HiggはCinema Studioに統合されたAIアシスタントです。「夕暮れの渋谷を歩く女性のシーンを作りたい」と話しかけると、Shot Type・Lighting・Color Grading・Speed Rampまでを自律的に設計して入力してくれます。</p>
+  <div class="callout tip">
+    <strong>Mr.Higgsへの話しかけ方：</strong> 「映画のジャンル + 撮りたいシーン + 雰囲気」を日本語でもOKなので自然言語で伝える。例：「サイバーパンクな東京の路地裏、雨の夜、女性が傘を差して歩いている、スローモーション」
+  </div>
+
+  <h3>4-4. Elements（エフェクト素材）</h3>
+  <p>ElementsはCinema Studioに合成できるエフェクト素材ライブラリです。雨・雪・炎・光の粒子・霧などの自然現象や、フィルムグレイン・レンズフレアなどの映像エフェクトを重ねられます。</p>
+  <div class="model-grid cols3">
+    <div class="model-card">
+      <div class="model-card-name">自然現象系</div>
+      <div class="model-card-desc">雨、雪、霧、波、炎、落ち葉。リアル素材との合成で説得力を高める。</div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">映像エフェクト系</div>
+      <div class="model-card-desc">フィルムグレイン、レンズフレア、光漏れ（Light Leak）、クロマアベレーション。</div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">光・パーティクル系</div>
+      <div class="model-card-desc">ボケ光、キラキラ粒子、蛍光、レーザー光線。音楽系コンテンツに向いている。</div>
+    </div>
+  </div>
+
+  <h3>4-5. Cinema Studio の基本ワークフロー</h3>
+  <ol class="step-list">
+    <li><div class="step-num">1</div><div class="step-body"><strong>Cinema Studio を開く</strong>　左サイドバーから Cinema Studio を選択。</div></li>
+    <li><div class="step-num">2</div><div class="step-body"><strong>Mr.Higgs に概要を伝える（任意）</strong>　作りたいシーンを自然言語で説明するとパラメータが自動入力される。</div></li>
+    <li><div class="step-num">3</div><div class="step-body"><strong>各パラメータを確認・調整</strong>　Genre・Camera Shot・Camera Movement・Lighting・Color Gradingを手動で微調整。</div></li>
+    <li><div class="step-num">4</div><div class="step-body"><strong>必要に応じてElementsを追加</strong>　エフェクト素材を重ねてムードを強化。</div></li>
+    <li><div class="step-num">5</div><div class="step-body"><strong>V2（8cr）でドラフト生成</strong>　設定の方向性を確認する。</div></li>
+    <li><div class="step-num">6</div><div class="step-body"><strong>調整してV3（75cr）で最終出力</strong>　ドラフトで問題がなければV3で高品質版を生成。</div></li>
+  </ol>
+
+  <h3>4-6. Speed Ramp の8プリセット</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>プリセット名</th><th>効果</th><th>向いているシーン</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Bullet Time</strong></td><td>極限のスローモーション→通常速度</td><td>格闘・スポーツのクライマックス</td></tr>
+        <tr><td><strong>Impact</strong></td><td>通常→瞬間スロー→通常に戻る</td><td>衝突・着地・爆発の瞬間</td></tr>
+        <tr><td><strong>Ramp Up</strong></td><td>スローから徐々に加速</td><td>走り出し・出発シーン</td></tr>
+        <tr><td><strong>Ramp Down</strong></td><td>通常から徐々に減速→スロー終了</td><td>感動的なクローズアップ</td></tr>
+        <tr><td><strong>Freeze Frame</strong></td><td>特定の瞬間を静止させてから再開</td><td>タイトルテロップのタイミング合わせ</td></tr>
+        <tr><td><strong>Time Lapse</strong></td><td>超高速で時間経過を表現</td><td>夜明け・群衆・雲の動き</td></tr>
+        <tr><td><strong>Hyper Lapse</strong></td><td>移動しながらの高速経過</td><td>街中・旅行系コンテンツ</td></tr>
+        <tr><td><strong>Echo</strong></td><td>動きが残像を引いてリピートする</td><td>音楽MV・エモーショナルな演出</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info" style="margin-top:20px;">
+    <strong>Cinema Studio V2 ドラフトサンプル：</strong> Ch.2「モデル別 生成動画サンプル」に掲載しているCinema Studio Video V2の動画がドラフト確認の実例です。カメラワーク・照明・Speed Rampの方向性をV2（8cr）で確認してから、同設定でV3（75cr）を実行する流れを参考にしてください。
+  </div>
+
+  <div class="callout warn">
+    <strong>コスト注意：</strong> Cinema Studio V3は1回75crと非常に高額です。Ultraプラン（月3,000cr）でも約40回しか使えません。必ずV2（8cr）でドラフト確認してから使ってください。
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CHAPTER 5: Canvas -->
+<!-- ═══════════════════════════════════════ -->
+<section class="chapter-section c5" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-icon">05</div>
+    <div class="chapter-header-text">
+      <h2>Canvas（ノードベース）</h2>
+      <div class="ch-sub">複数の生成ステップをノードで繋ぎ、パイプラインとして保存・再利用する高度なワークフロー機能。大量生産・自動化の要。</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(116,199,236,.06);border:1.5px dashed var(--ch5);border-radius:12px;padding:16px 20px;margin-bottom:28px;display:flex;align-items:flex-start;gap:14px;">
+    <div style="font-size:22px;line-height:1;">📄</div>
+    <div>
+      <div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--ch5);margin-bottom:4px;">独立チュートリアルを別途作成予定</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;">Canvas はノードの組み合わせが無限にあるため、本ドキュメントでは概念と基本構成のみを扱います。テンプレートの設計・複数バリエーションの一括生成・チームでの共有ワークフロー構築などの実践例は <strong style="color:var(--text);">「Canvas 完全チュートリアル」</strong> として別途独立したドキュメントを作成予定です。</div>
+    </div>
+  </div>
+
+  <h3>5-1. Canvas とは</h3>
+  <p>CanvasはHiggsfieldの全モデルをノード（部品）として組み合わせ、ワークフローを視覚的に設計する機能です。音楽制作の「DAW（Digital Audio Workstation）」で各トラックを繋いでミックスするように、画像生成→動画生成→エフェクト追加→書き出しの工程を一つのフロー図として保存できます。</p>
+
+  <div class="callout info">
+    <strong>Canvasが有効なケース：</strong><br>
+    ① 同じワークフローを毎回繰り返している（例：商品画像→動画化→書き出し）<br>
+    ② 複数バリエーションを一括生成したい（例：10種類のカラーバリエーション動画）<br>
+    ③ チームで同じ設定を共有したい
+  </div>
+
+  <h3>5-2. 主要ノードタイプ</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ノード</th><th>機能</th><th>入力</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Image Gen</strong></td><td>テキスト/参照画像から静止画生成</td><td>Prompt / Image</td><td>Image</td></tr>
+        <tr><td><strong>Video Gen</strong></td><td>テキスト/画像から動画生成</td><td>Prompt / Image / Audio</td><td>Video</td></tr>
+        <tr><td><strong>Marketing Studio</strong></td><td>商品URLから広告動画生成</td><td>URL / Image</td><td>Video</td></tr>
+        <tr><td><strong>Cinema Studio</strong></td><td>Cinema Studioのパラメータ付き動画生成</td><td>Prompt / Parameters</td><td>Video</td></tr>
+        <tr><td><strong>Transform</strong></td><td>画像・動画の変換・加工</td><td>Image / Video</td><td>Image / Video</td></tr>
+        <tr><td><strong>Output</strong></td><td>最終成果物として書き出す</td><td>Any</td><td>Download / Library</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>5-3. 基本ワークフロー（ノードの組み方）</h3>
+  <ol class="step-list">
+    <li><div class="step-num">1</div><div class="step-body"><strong>Canvas を開く</strong>　左サイドバーの「Canvas」をクリック。新規キャンバスを作成。</div></li>
+    <li><div class="step-num">2</div><div class="step-body"><strong>入力ノードを置く</strong>　右クリック→「Add Node」→「Image Gen」を選択し、プロンプトとモデルを設定。</div></li>
+    <li><div class="step-num">3</div><div class="step-body"><strong>次のノードを繋げる</strong>　Image Genの出力ポート（右端の●）から「Video Gen」ノードの入力ポートへドラッグで接続。</div></li>
+    <li><div class="step-num">4</div><div class="step-body"><strong>最後にOutputノードを置く</strong>　Video Genの出力をOutputノードに繋ぐ。</div></li>
+    <li><div class="step-num">5</div><div class="step-body"><strong>「Run」で一括実行</strong>　全ノードが順番に実行され、最終成果物がLibraryに保存される。</div></li>
+    <li><div class="step-num">6</div><div class="step-body"><strong>テンプレートとして保存</strong>　「Save as Template」でこのフロー全体を保存。次回から設定なしで即実行できる。</div></li>
+  </ol>
+
+  <h3>5-4. 実践例：商品画像 → 広告動画の自動生成フロー</h3>
+  <div class="code-block">
+<span class="comment">// Canvas フロー構成例</span>
+
+[<span class="string">Input: 商品画像アップロード</span>]
+        ↓
+[<span class="key">Image Gen: Soul 2.0</span>]
+  prompt: <span class="string">"Product hero shot, studio lighting, white background"</span>
+  model: soul_2
+        ↓
+[<span class="key">Marketing Studio</span>]
+  mode: <span class="string">"UGC"</span>
+  hook_id: <span class="string">"object_flies_in"</span>
+  setting_id: <span class="string">"sunlit_kitchen"</span>
+        ↓
+[<span class="key">Output</span>]
+  → Library に自動保存
+  </div>
+
+  <h3>5-5. Figma方式のコラボレーション</h3>
+  <p>CanvasはFigmaと同様のリアルタイムコラボレーションに対応しています。同じキャンバスを複数人で同時編集でき、チームでのコンテンツ制作ワークフローを共有できます。</p>
+  <div class="model-grid cols2">
+    <div class="model-card">
+      <div class="model-card-name">共有・Collab</div>
+      <div class="model-card-desc">キャンバスのURLを共有するだけでチームメンバーが同じフローを閲覧・編集可能。権限はView / Editで設定。</div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">テンプレート配布</div>
+      <div class="model-card-desc">完成したワークフローをテンプレートとして公開。他のユーザーがコピーして自分のワークスペースで使える。</div>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <strong>Canvasの活用タイミング：</strong> 同じ操作を3回以上繰り返していると気づいたらCanvasで自動化するサインです。「静止画生成 → 動画化 → Marketing Studio」のように3ステップ以上あるフローは必ずCanvasに落とし込む習慣をつけると作業効率が大幅に上がります。
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- APPENDIX: クレジット早見表 -->
+<!-- ═══════════════════════════════════════ -->
+<section class="chapter-section appendix-section" id="appendix">
+  <div class="chapter-header">
+    <div class="chapter-icon" style="background:linear-gradient(135deg,var(--accent),var(--accent3));font-size:14px;">APX</div>
+    <div class="chapter-header-text">
+      <h2>クレジット早見表 &amp; Tips</h2>
+      <div class="ch-sub">実測値をもとにしたモデル別クレジット消費の目安と、無駄なく使うための運用術。</div>
+    </div>
+  </div>
+
+  <h3>画像モデル クレジット早見表</h3>
+  <div class="table-wrap">
+    <table class="credit-table">
+      <thead><tr><th>モデル</th><th>用途</th><th>クレジット</th><th>コメント</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Soul 2.0</strong></td><td>人物・ポートレート</td><td>0.12 cr</td><td>最安。人物生成の費用対効果が圧倒的</td></tr>
+        <tr><td><strong>Soul Cast</strong></td><td>キャラクター固定</td><td>0.12 cr</td><td>Soul 2.0と同コスト。一貫したキャラクター量産向け</td></tr>
+        <tr><td><strong>Soul Cinema</strong></td><td>映画的人物</td><td>0 cr ※</td><td>※Ultraプラン特典の可能性あり。要確認</td></tr>
+        <tr><td><strong>Nano Banana Pro</strong></td><td>汎用・環境</td><td>2 cr</td><td>汎用の標準コスト。追従性が高い</td></tr>
+        <tr><td><strong>GPT Image 2（low）</strong></td><td>テキスト確認</td><td>0.5 cr</td><td>テキスト確認用。high の 1/14 のコスト</td></tr>
+        <tr><td><strong>GPT Image 2（high）</strong></td><td>テキスト最終</td><td>7 cr</td><td>テキスト描写が確実に必要な最終出力のみ使用</td></tr>
+        <tr><td><strong>Cinema Studio 2.5（静止画）</strong></td><td>映画的スチル</td><td>2 cr</td><td>Nano Banana Proと同コストで映画的質感</td></tr>
+        <tr><td><strong>Flux Kontext</strong></td><td>画像編集</td><td>2 cr</td><td>部分編集に強い</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>動画モデル クレジット早見表</h3>
+  <div class="table-wrap">
+    <table class="credit-table">
+      <thead><tr><th>モデル</th><th>用途</th><th>クレジット目安</th><th>コメント</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Seedance 2.0</strong></td><td>人物動画</td><td>〜10 cr</td><td>参照駆動でキャラクター維持に強い</td></tr>
+        <tr><td><strong>Kling 3.0</strong></td><td>音声付き動画</td><td>〜12 cr</td><td>Start/End Frame + ネイティブ音声対応</td></tr>
+        <tr><td><strong>Veo 3.1</strong></td><td>環境動画</td><td>〜15 cr</td><td>環境音自動付与。非人物コンテンツに強い</td></tr>
+        <tr><td><strong>Cinema Studio Video V2</strong></td><td>ドラフト確認</td><td>8 cr</td><td>V3の前に必ずV2で確認すること</td></tr>
+        <tr><td><strong>Cinema Studio Video V3</strong></td><td>最終出力</td><td>75 cr</td><td>Ultraプランで月40回が上限。慎重に使用</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>クレジット節約の黄金ルール</h3>
+  <div class="model-grid cols2">
+    <div class="model-card">
+      <div class="model-card-name">🔑 ルール1：ドラフト→本番の2段階</div>
+      <div class="model-card-desc">高額モデル（Cinema V3 75cr、GPT Image 2 high 7cr）を使う前に、安価なドラフト版で方向性を確認してから本番生成に進む。</div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">🔑 ルール2：人物はSoul 2.0に任せる</div>
+      <div class="model-card-desc">人物が主役のコンテンツは必ずSoul 2.0（0.12cr）を使う。他のモデルで人物を生成するのは明確な理由がある場合のみ。</div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">🔑 ルール3：Soul 2.0 + Flux Kontextの組み合わせ</div>
+      <div class="model-card-desc">人物をSoul 2.0で生成（0.12cr）→背景だけFlux Kontextで差し替え（2cr）。人物クオリティを最小コストで確保する最強コンビ。</div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-name">🔑 ルール4：CanvasでRun前に設定を確認</div>
+      <div class="model-card-desc">Canvasで複数ノードを一括実行する前に、各ノードのモデルとパラメータを必ず確認。高額モデルが複数連鎖すると一気にクレジットが消える。</div>
+    </div>
+  </div>
+
+  <div class="callout note">
+    <strong>クレジット管理の目安（Ultraプラン 3,000cr/月）：</strong><br>
+    ・Soul 2.0 静止画：25,000枚（使い放題レベル）<br>
+    ・Nano Banana Pro 静止画：1,500枚<br>
+    ・Cinema Studio Video V3：40本（月上限に注意）<br>
+    ・Veo 3.1 動画：200本程度<br>
+    Cinema Studio V3の多用だけはクレジットを急速に消費するので特別な注意が必要です。
+  </div>
+</section>
+
+</div><!-- /content -->
+</main>
+</div><!-- /layout -->
+</body>
+</html>
